@@ -14,9 +14,27 @@
  $pass = $_POST['password'];
  
  $color=$_GET['color'];
+ $isValidated=true;
+ 
+ $servername =  "localhost";
+ $user = "root";
+ $password ="";
+ $db="wed";
+ 
+ $conn = mysqli_connect($servername,$user,$password,$db);
+ 
+ if(!$conn){
+	 die("Error connecting to db");
+ }
+ 
+ $query = "INSERT INTO users(name,email,password) values('".$name."','".$email."','".$pass."')";
+ 
 
-	$isValidated=true;
+if(!mysqli_query($conn,$query)){
+	  echo "Record not added";
+ }
 
+	mysqli_close($conn);
 
  }
 ?>
@@ -178,7 +196,8 @@ body {
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
 		
-			<?php if($isValidated==true)  { ?>
+			<?php if($isValidated)  { ?>
+			
 		
 			<div class="card-body">
 			
