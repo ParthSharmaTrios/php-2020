@@ -2,60 +2,12 @@
 
 session_start();
 
+if(!isset($_SESSION["user"])){
+	header("Location: login.php");
+}
 
-	if(isset($_SESSION["user"])){
-		header("Location: dashboard.php");
-	}
-
-
- $isValidated = false;
+$user=$_SESSION["user"];
  
- $color = "#007bff";
- 
- if(
-	isset($_POST['email']) &&
-	isset($_POST['password'])
- ){
-
- $email = $_POST['email'];
- $pass = $_POST['password'];
- 
- $color=$_GET['color'];
- $isValidated=true;
- 
- $servername =  "localhost";
- $user = "root";
- $password ="";
- $db="wed";
- 
- $conn = mysqli_connect($servername,$user,$password,$db);
- 
- if(!$conn){
-	 die("Error connecting to db");
- }
- 
- $query = "select * from users where email='".$email."' and password='".$pass."'";
- 
-
-	$result = mysqli_query($conn, $query);
-
-	if (mysqli_num_rows($result) > 0) {
-		
-		while($row = mysqli_fetch_assoc($result)) {
-		
-			
-			
-			$_SESSION["user"]= $row;
-			
-			
-			
-			
-			header("Location: dashboard.php");
-		}
-	} else {
-		die("invalid email and password");
-	}
- }
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +28,7 @@ session_start();
 }
 
 body {
-  background: <?php echo $color; ?>;
+  background: purple;
   
 }
 
@@ -215,36 +167,25 @@ body {
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
 		
+		
 			
 		
-          <div class="card-body">
-            <h5 class="card-title text-center">Login</h5>
-            
-			<form action="login.php?color=green" class="form-signin" method="post">
+			<div class="card-body">
+			
+				<div class="jumbotron">
+				  <h1>Welcome <?php echo $user["name"]; ?>   !</h1>
+				  <p> Your email is <?php echo $user["email"] ?></p>
+				  
+				  <a href="logout.php" class="btn btn-danger">Logout</a>
+				 
+				</div>
+			</div>
 			
 			
-              
-			  
-			  
-			  <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required autofocus>
-                <label for="inputEmail">Email address</label>
-              </div>
-
-              <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
-                <label for="inputPassword">Password</label>
-              </div>
-
-              
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign up</button>
-              <hr class="my-4">
-              
-            </form>
-          </div>
+		
+		
 		  
-		  
-			
+		
         </div>
       </div>
     </div>
